@@ -387,6 +387,20 @@
 
   .btn-restart:hover { border-color: var(--accent); color: var(--text); }
 
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    padding: 16px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  footer span {
+    color: var(--accent3);
+    font-weight: 500;
+  }
+
   /* Animations */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-20px); }
@@ -454,6 +468,7 @@
     <button class="btn-restart" onclick="restart()">↩ Hacer el test de nuevo</button>
   </div>
 
+  <footer>Realizado con <span>Claude</span> por Alexis B. © 2026</footer>
 </div>
 
 <script>
