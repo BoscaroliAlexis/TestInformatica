@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué estudiar en Informática?</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #1e1e2e;
+    --accent: #7c5cbf;
+    --accent2: #e05d8c;
+    --accent3: #3ecfb2;
+    --text: #e8e8f0;
+    --muted: #6b6b85;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 20% -10%, rgba(124,92,191,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 110%, rgba(224,93,140,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 680px;
+    padding: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    border: 1px solid rgba(62,207,178,0.3);
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #e8e8f0 0%, #7c5cbf 60%, #e05d8c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Progress */
+  .progress-bar-wrap {
+    background: var(--border);
+    height: 4px;
+    border-radius: 100px;
+    margin-bottom: 36px;
+    overflow: hidden;
+    animation: fadeDown 0.6s ease 0.1s both;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    animation: fadeDown 0.6s ease 0.15s both;
+  }
+
+  /* Question Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .question-number {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .option:hover {
+    border-color: var(--accent);
+    background: rgba(124,92,191,0.08);
+    transform: translateX(4px);
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(124,92,191,0.15);
+  }
+
+  .option-letter {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .option.selected .option-letter {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-back:hover { border-color: var(--muted); color: var(--text); }
+  .btn-back:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .btn-next.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,92,191,0.35); }
+
+  /* Result */
+  .result-screen {
+    display: none;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .result-screen.active { display: block; }
+
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(62,207,178,0.1);
+    border: 1px solid rgba(62,207,178,0.3);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--accent3);
+    margin-bottom: 24px;
+  }
+
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 24px;
+  }
+
+  .result-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .result-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .result-path {
+    font-size: 0.9rem;
+    color: var(--accent2);
+    font-weight: 500;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  .result-desc {
+    color: #b0b0c8;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .skill-chip {
+    background: rgba(124,92,191,0.1);
+    border: 1px solid rgba(124,92,191,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .skill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    min-width: 6px;
+  }
+
+  .roadmap {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .roadmap-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .roadmap-step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 28px; height: 28px;
+    min-width: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    color: white;
+  }
+
+  .step-text strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+    color: var(--text);
+  }
+
+  .step-text span {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .btn-restart {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn-restart:hover { border-color: var(--accent); color: var(--text); }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-screen.exit {
+    animation: slideOut 0.3s ease forwards;
+  }
+
+  @keyframes slideOut {
+    to { opacity: 0; transform: translateX(-30px); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">Test de Orientación</div>
+    <h1>¿Qué área de informática es para ti?</h1>
+    <p class="subtitle">Responde 10 preguntas sobre tu personalidad y te diremos por dónde empezar. Sin conocimientos previos necesarios.</p>
+  </div>
+
+  <div id="quiz-section">
+    <div class="progress-label">
+      <span id="q-counter">Pregunta 1 de 10</span>
+      <span id="q-percent">0%</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="card" id="question-card">
+      <div class="question-number" id="q-number">01 / 10</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+      <div class="nav">
+        <button class="btn-back" id="btn-back" onclick="prevQuestion()" disabled>← Anterior</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <div style="text-align:center; margin-bottom:28px;">
+      <div class="result-badge">✨ Tu camino en informática</div>
+    </div>
+    <div class="result-card">
+      <span class="result-icon" id="r-icon"></span>
+      <div class="result-title" id="r-title"></div>
+      <div class="result-path" id="r-path"></div>
+      <div class="result-desc" id="r-desc"></div>
+      <div class="skills-grid" id="r-skills"></div>
+      <div class="roadmap">
+        <div class="roadmap-title">Tu hoja de ruta para empezar 🗺️</div>
+        <div id="r-roadmap"></div>
+      </div>
+    </div>
+    <button class="btn-restart" onclick="restart()">↩ Hacer el test de nuevo</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Cuando tienes un problema difícil, ¿qué haces primero?",
+    options: [
+      { text: "Lo descompongo en partes pequeñas y las resuelvo una a una", weights: { dev: 3, data: 2, cyber: 2, ux: 1 } },
+      { text: "Busco patrones o tendencias que me ayuden a entenderlo", weights: { data: 3, dev: 1, cyber: 1, ux: 1 } },
+      { text: "Pienso en quién lo usará y cómo lo haría más fácil de entender", weights: { ux: 3, dev: 1, data: 1, cyber: 0 } },
+      { text: "Me pregunto qué podría salir mal o cómo alguien lo explotaría", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Qué tipo de actividades disfrutas más en tu tiempo libre?",
+    options: [
+      { text: "Construir cosas, armar muebles, programar electrónica, hacer proyectos", weights: { dev: 3, cyber: 2, data: 1, ux: 1 } },
+      { text: "Leer estadísticas, análisis deportivos, noticias con datos", weights: { data: 3, dev: 1, cyber: 1, ux: 1 } },
+      { text: "Diseñar, decorar, pensar en cómo mejorar la experiencia de algo", weights: { ux: 3, dev: 1, data: 0, cyber: 0 } },
+      { text: "Resolver acertijos, puzzles, juegos de estrategia o detectivescos", weights: { cyber: 3, data: 2, dev: 2, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Cómo reaccionas cuando algo no funciona como esperabas?",
+    options: [
+      { text: "Me pongo a investigar el código o el proceso hasta encontrar el error", weights: { dev: 3, cyber: 2, data: 1, ux: 0 } },
+      { text: "Reviso los datos y métricas para entender por qué falló", weights: { data: 3, dev: 1, cyber: 2, ux: 1 } },
+      { text: "Pregunto a los usuarios qué sintieron o dónde se confundieron", weights: { ux: 3, dev: 0, data: 1, cyber: 0 } },
+      { text: "Pienso si pudo haber un ataque o fallo de seguridad", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Cuál de estas frases te describe mejor?",
+    options: [
+      { text: '"Me encanta ver cómo una idea se convierte en algo real y funcional"', weights: { dev: 3, ux: 2, data: 1, cyber: 0 } },
+      { text: '"Los números y las estadísticas me hablan, veo historias en los datos"', weights: { data: 3, cyber: 1, dev: 1, ux: 0 } },
+      { text: '"Siempre estoy pensando en si las personas entenderán esto fácilmente"', weights: { ux: 3, dev: 1, data: 1, cyber: 0 } },
+      { text: '"Soy desconfiado por naturaleza, siempre busco el truco o la trampa"', weights: { cyber: 3, data: 1, dev: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "Si tuvieras que elegir un superpoder en el trabajo, ¿cuál sería?",
+    options: [
+      { text: "Poder crear cualquier herramienta o app que necesito", weights: { dev: 3, cyber: 1, data: 1, ux: 1 } },
+      { text: "Ver el futuro a través de predicciones y análisis de datos", weights: { data: 3, dev: 1, cyber: 1, ux: 0 } },
+      { text: "Hacer que cualquier proceso sea intuitivo para cualquier persona", weights: { ux: 3, dev: 1, data: 1, cyber: 0 } },
+      { text: "Detectar y neutralizar cualquier amenaza antes de que ocurra", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Qué te genera más satisfacción al terminar un proyecto?",
+    options: [
+      { text: "Ver el producto funcionando y siendo usado por gente real", weights: { dev: 3, ux: 2, data: 0, cyber: 0 } },
+      { text: "Haber descubierto algo nuevo e inesperado en los datos", weights: { data: 3, cyber: 1, dev: 0, ux: 0 } },
+      { text: "Escuchar que fue muy fácil y agradable de usar", weights: { ux: 3, dev: 1, data: 0, cyber: 0 } },
+      { text: "Saber que el sistema quedó protegido y sin vulnerabilidades", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Cómo eres con los detalles?",
+    options: [
+      { text: "Me importan pero siempre priorizando que funcione bien", weights: { dev: 2, cyber: 2, data: 2, ux: 1 } },
+      { text: "Los detalles numéricos y estadísticos me fascinan", weights: { data: 3, cyber: 2, dev: 1, ux: 0 } },
+      { text: "Me obsesiono con cada pixel y cada palabra de la interfaz", weights: { ux: 3, dev: 1, data: 0, cyber: 0 } },
+      { text: "Un pequeño detalle puede ser la diferencia entre seguro e inseguro", weights: { cyber: 3, data: 1, dev: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Qué tipo de películas o series disfrutas más?",
+    options: [
+      { text: "Ciencia ficción donde crean tecnología increíble (Her, Iron Man)", weights: { dev: 3, ux: 2, data: 1, cyber: 1 } },
+      { text: "Documentales o thrillers de investigación, periodismo de datos", weights: { data: 3, cyber: 2, dev: 0, ux: 0 } },
+      { text: "Dramas sobre personas, psicología humana, comportamiento social", weights: { ux: 3, data: 1, dev: 0, cyber: 0 } },
+      { text: "Thrillers de espías, hackers, conspiraciones (Mr. Robot, Snowden)", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "En un equipo de trabajo, ¿qué rol sueles tomar naturalmente?",
+    options: [
+      { text: "El que hace las cosas, el ejecutor, el que construye", weights: { dev: 3, cyber: 1, data: 1, ux: 1 } },
+      { text: "El analista, el que aporta datos y evidencia para tomar decisiones", weights: { data: 3, cyber: 1, dev: 1, ux: 1 } },
+      { text: "El que piensa en el usuario y en cómo se verá y sentirá todo", weights: { ux: 3, dev: 1, data: 1, cyber: 0 } },
+      { text: "El escéptico, el que pregunta '¿qué pasa si esto falla?'", weights: { cyber: 3, data: 2, dev: 1, ux: 0 } },
+    ]
+  },
+  {
+    text: "¿Cuál de estos temas te generaría más curiosidad si lo escucharas en una conversación?",
+    options: [
+      { text: "Cómo funciona por dentro una aplicación que usas todos los días", weights: { dev: 3, cyber: 1, data: 1, ux: 1 } },
+      { text: "Cómo Netflix sabe exactamente qué recomendar a cada persona", weights: { data: 3, dev: 2, cyber: 1, ux: 1 } },
+      { text: "Por qué algunas apps son tan fáciles de usar y otras tan frustrantes", weights: { ux: 3, dev: 1, data: 1, cyber: 0 } },
+      { text: "Cómo los hackers roban contraseñas y cómo defenderse", weights: { cyber: 3, dev: 1, data: 1, ux: 0 } },
+    ]
+  }
+];
+
+const profiles = {
+  dev: {
+    icon: "⚙️",
+    title: "Desarrollo de Software",
+    path: "Programación & Desarrollo Web/Apps",
+    desc: "Tu perfil encaja perfecto con el desarrollo de software. Eres alguien práctico que disfruta construir cosas concretas y ver resultados. El desarrollo te permitirá crear apps, webs, sistemas y herramientas desde cero. Es una de las áreas con mayor demanda laboral y posibilita trabajar en prácticamente cualquier industria.",
+    skills: ["HTML/CSS/JavaScript", "Python o Java", "Git & Control de versiones", "Bases de datos SQL", "Frameworks como React", "APIs y backend"],
+    roadmap: [
+      { title: "Semana 1-4: Lógica y pensamiento computacional", desc: "Plataformas como Scratch o Python con freeCodeCamp para entender variables, bucles y funciones." },
+      { title: "Mes 2-3: HTML, CSS y JavaScript básico", desc: "Construye tus primeras páginas web. Usa The Odin Project (gratuito) o cursos en Platzi." },
+      { title: "Mes 4-6: Tu primer proyecto real", desc: "Crea una pequeña app web (lista de tareas, calculadora). Súbela a GitHub." },
+      { title: "Mes 7-12: Especialización", desc: "Elige frontend (React), backend (Node.js / Python Flask) o fullstack según lo que más disfrutaste." },
+    ]
+  },
+  data: {
+    icon: "📊",
+    title: "Ciencia de Datos & IA",
+    path: "Data Science / Machine Learning / Análisis de Datos",
+    desc: "Tu mente analítica y tu amor por los patrones te hacen ideal para el mundo de los datos. Vivirás extrayendo información valiosa de grandes volúmenes de datos y construyendo modelos que predicen el futuro. El Data Science está en auge y combina matemáticas, estadística y programación.",
+    skills: ["Python & Pandas", "SQL para bases de datos", "Estadística descriptiva", "Visualización (Matplotlib, Tableau)", "Machine Learning básico", "Excel avanzado como inicio"],
+    roadmap: [
+      { title: "Semana 1-4: Excel y estadística básica", desc: "Aprende a analizar datos con Excel/Google Sheets. Entiende media, moda, correlación." },
+      { title: "Mes 2-3: Python para datos", desc: "Curso de Python básico + Pandas y Numpy. Kaggle Learn es gratis y excelente." },
+      { title: "Mes 4-5: SQL y visualización", desc: "Aprende SQL para consultar bases de datos. Practica con Tableau Public o Power BI (gratuitos)." },
+      { title: "Mes 6-12: Machine Learning", desc: "Cursos de ML en Kaggle o Google ML Crash Course. Participa en competencias de Kaggle." },
+    ]
+  },
+  ux: {
+    icon: "🎨",
+    title: "UX/UI & Diseño de Producto",
+    path: "Diseño de Experiencia de Usuario / Product Design",
+    desc: "Tu empatía y obsesión por hacer las cosas fáciles y agradables para las personas te perfila como un futuro diseñador de experiencias digitales. El UX/UI combina psicología, diseño y tecnología para crear productos que la gente ame usar. Es una carrera muy valorada que no requiere saber programar para empezar.",
+    skills: ["Figma (diseño de interfaces)", "Research y entrevistas a usuarios", "Wireframing y prototipado", "Principios de usabilidad", "Design Thinking", "Psicología cognitiva básica"],
+    roadmap: [
+      { title: "Semana 1-4: Fundamentos de diseño", desc: "Aprende principios básicos: tipografía, color, layout. Curso gratuito de Google UX Design (Coursera)." },
+      { title: "Mes 2-3: Figma desde cero", desc: "Figma es gratuito. Copia interfaces que admires y luego empieza a diseñar las tuyas." },
+      { title: "Mes 4-5: User Research", desc: "Aprende a hacer entrevistas, encuestas y tests de usabilidad. Practica con 5 personas reales." },
+      { title: "Mes 6-12: Portfolio y casos de estudio", desc: "Rediseña apps conocidas o crea conceptos propios. Un buen portfolio en Behance es tu mejor CV." },
+    ]
+  },
+  cyber: {
+    icon: "🛡️",
+    title: "Ciberseguridad",
+    path: "Ethical Hacking / Seguridad Informática",
+    desc: "Tu mente desconfiada y tu habilidad para pensar como un atacante es exactamente lo que busca el mundo de la ciberseguridad. Los profesionales de seguridad protegen a empresas, gobiernos y millones de personas. Es una carrera con altísima demanda, bien remunerada y con desafíos intelectuales constantes.",
+    skills: ["Redes y protocolos (TCP/IP)", "Linux básico", "Python para scripting", "Criptografía básica", "OWASP Top 10", "Herramientas como Wireshark, Nmap"],
+    roadmap: [
+      { title: "Semana 1-4: Fundamentos de redes", desc: "Aprende cómo funciona internet: IP, DNS, HTTP. Curso de CompTIA Network+ conceptos en YouTube." },
+      { title: "Mes 2-3: Linux y línea de comandos", desc: "Instala Kali Linux en una máquina virtual. OverTheWire.org tiene wargames gratuitos para principiantes." },
+      { title: "Mes 4-6: Ethical Hacking básico", desc: "TryHackMe.com es perfecto para empezar (tiene ruta de principiante completa). Muy práctico y gamificado." },
+      { title: "Mes 7-12: Certificaciones", desc: "Estudia para CompTIA Security+ como primera cert reconocida. Participa en CTFs (Capture The Flag)." },
+    ]
+  }
+};
+
+let current = 0;
+let answers = [];
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('q-number').textContent = String(current+1).padStart(2,'0') + ' / 10';
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-counter').textContent = `Pregunta ${current+1} de 10`;
+  
+  const pct = Math.round((current/10)*100);
+  document.getElementById('q-percent').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const letters = ['A','B','C','D'];
+    const div = document.createElement('button');
+    div.className = 'option' + (answers[current] === i ? ' selected' : '');
+    div.innerHTML = `<span class="option-letter">${letters[i]}</span>${o.text}`;
+    div.onclick = () => selectOption(i, div);
+    opts.appendChild(div);
+  });
+
+  document.getElementById('btn-back').disabled = current === 0;
+  const nextBtn = document.getElementById('btn-next');
+  if (answers[current] !== undefined) {
+    nextBtn.classList.add('visible');
+    nextBtn.textContent = current === 9 ? 'Ver mi resultado 🚀' : 'Siguiente →';
+  } else {
+    nextBtn.classList.remove('visible');
+  }
+}
+
+function selectOption(idx, el) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[current] = idx;
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = current === 9 ? 'Ver mi resultado 🚀' : 'Siguiente →';
+}
+
+function nextQuestion() {
+  if (answers[current] === undefined) return;
+  if (current === 9) { showResult(); return; }
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  current++;
+  card.style.animation = 'fadeUp 0.4s ease both';
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (current === 0) return;
+  current--;
+  document.getElementById('question-card').style.animation = 'none';
+  setTimeout(() => {
+    document.getElementById('question-card').style.animation = 'fadeUp 0.4s ease both';
+  }, 10);
+  renderQuestion();
+}
+
+function showResult() {
+  // Tally scores
+  const scores = { dev: 0, data: 0, cyber: 0, ux: 0 };
+  answers.forEach((ansIdx, qIdx) => {
+    const w = questions[qIdx].options[ansIdx].weights;
+    for (const k in w) scores[k] += w[k];
+  });
+
+  // Find winner
+  let winner = 'dev';
+  Object.keys(scores).forEach(k => { if (scores[k] > scores[winner]) winner = k; });
+
+  const p = profiles[winner];
+  document.getElementById('quiz-section').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.classList.add('active');
+
+  document.getElementById('r-icon').textContent = p.icon;
+  document.getElementById('r-title').textContent = p.title;
+  document.getElementById('r-path').textContent = '📍 ' + p.path;
+  document.getElementById('r-desc').textContent = p.desc;
+
+  const sg = document.getElementById('r-skills');
+  sg.innerHTML = p.skills.map(s => `<div class="skill-chip"><span class="skill-dot"></span>${s}</div>`).join('');
+
+  const rm = document.getElementById('r-roadmap');
+  rm.innerHTML = p.roadmap.map((step, i) => `
+    <div class="roadmap-step">
+      <div class="step-num">${i+1}</div>
+      <div class="step-text"><strong>${step.title}</strong><span>${step.desc}</span></div>
+    </div>
+  `).join('');
+}
+
+function restart() {
+  current = 0;
+  answers = [];
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('result-screen').classList.remove('active');
+  renderQuestion();
+}
+
+// Init
+renderQuestion();
+</script>
+</body>
+</html>
